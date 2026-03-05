@@ -30,6 +30,13 @@ const ALL_CATEGORIES: MissionCategory[] = [
   'relationship', 'selfcare', 'gratitude', 'restraint', 'environment', 'growth',
 ];
 
+const MILESTONES = [
+  { days: 7, label: '7일 달성', icon: 'star' as const },
+  { days: 14, label: '14일 달성', icon: 'award' as const },
+  { days: 30, label: '30일 달성', icon: 'zap' as const },
+  { days: 100, label: '100일 달성', icon: 'flag' as const },
+];
+
 function formatDate(dateStr: string): string {
   const [, m, d] = dateStr.split('-').map(Number);
   const days = ['일', '월', '화', '수', '목', '금', '토'];
@@ -100,6 +107,21 @@ export default function ProfileScreen() {
             <StatBox value={String(undone)} label="미완료" color={Colors.disabled} />
             <StatBox value={`${rate}%`} label="달성률" color={Colors.accent} />
           </View>
+        </View>
+
+        {/* 마일스톤 뱃지 */}
+        <Text style={styles.sectionTitle}>마일스톤</Text>
+        <View style={styles.milestoneRow}>
+          {MILESTONES.map(m => {
+            const unlocked = done >= m.days;
+            return (
+              <View key={m.days} style={[styles.milestoneBadge, unlocked && styles.milestoneBadgeUnlocked]}>
+                <Feather name={m.icon} size={20} color={unlocked ? Colors.accent : Colors.disabled} />
+                <Text style={[styles.milestoneDays, unlocked && styles.milestoneDaysUnlocked]}>{m.days}일</Text>
+                <Text style={[styles.milestoneLabel, unlocked && styles.milestoneLabelUnlocked]}>{unlocked ? '달성' : '도전 중'}</Text>
+              </View>
+            );
+          })}
         </View>
 
         {/* 카테고리별 현황 */}
@@ -285,6 +307,44 @@ const styles = StyleSheet.create({
     textTransform: 'uppercase',
     letterSpacing: 0.5,
     marginBottom: 10,
+  },
+
+  // 마일스톤
+  milestoneRow: {
+    flexDirection: 'row',
+    gap: 10,
+    marginBottom: 24,
+  },
+  milestoneBadge: {
+    flex: 1,
+    backgroundColor: Colors.white,
+    borderRadius: 14,
+    borderWidth: 1,
+    borderColor: Colors.border,
+    paddingVertical: 14,
+    alignItems: 'center',
+    gap: 5,
+    opacity: 0.45,
+  },
+  milestoneBadgeUnlocked: {
+    opacity: 1,
+    borderColor: Colors.accent,
+  },
+  milestoneDays: {
+    fontSize: FontSize.sm,
+    fontWeight: '700',
+    color: Colors.textSecondary,
+  },
+  milestoneDaysUnlocked: {
+    color: Colors.label,
+  },
+  milestoneLabel: {
+    fontSize: 10,
+    color: Colors.textTertiary,
+  },
+  milestoneLabelUnlocked: {
+    color: Colors.accent,
+    fontWeight: '600',
   },
 
   // 카테고리 카드

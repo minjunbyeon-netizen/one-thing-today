@@ -29,6 +29,7 @@ import {
   getCheckin,
   saveCheckin,
   getStreak,
+  getCheckinsByMonth,
 } from '@/src/utils/database';
 import { getStreakMessage } from '@/src/utils/streakMessages';
 
@@ -55,6 +56,7 @@ export default function HomeScreen() {
   const [mission, setMission] = useState<Mission | null>(null);
   const [checkin, setCheckin] = useState<CheckIn | null>(null);
   const [streak, setStreak] = useState(0);
+  const [monthDone, setMonthDone] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
 
   // 버튼 애니메이션 (200ms fade/scale)
@@ -74,10 +76,14 @@ export default function HomeScreen() {
       const todayMission = getTodayMission(settings);
       const todayCheckin = getCheckin(today);
       const currentStreak = getStreak();
+      const yearMonth = today.slice(0, 7);
+      const monthCheckins = getCheckinsByMonth(yearMonth);
+      const doneThisMonth = monthCheckins.filter(c => c.status === 'done').length;
 
       setMission(todayMission);
       setCheckin(todayCheckin);
       setStreak(currentStreak);
+      setMonthDone(doneThisMonth);
     } catch (error) {
       console.warn('홈 데이터 로드 오류:', error);
     } finally {
@@ -285,6 +291,24 @@ export default function HomeScreen() {
             </View>
           )}
         </View>
+
+        {/* 이번 달 진행 현황 */}
+        {monthDone > 0 && (
+          <View style={styles.monthProgress}>
+            <View style={styles.monthProgressHeader}>
+              <Text style={styles.monthProgressLabel}>이번 달 달성</Text>
+              <Text style={styles.monthProgressCount}>{monthDone}일</Text>
+            </View>
+            <View style={styles.monthProgressBar}>
+              <View
+                style={[
+                  styles.monthProgressFill,
+                  { width: `${Math.min((monthDone / new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getDate()) * 100, 100)}%` },
+                ]}
+              />
+            </View>
+          </View>
+        )}
 
         {/* 체크인 버튼 영역 */}
         <View style={styles.actionSection}>
@@ -552,6 +576,43 @@ const styles = StyleSheet.create({
     fontSize: FontSize.sm,
     fontWeight: '600',
     color: Colors.success,
+  },
+
+  // 이번 달 진행 현황
+  monthProgress: {
+    backgroundColor: Colors.white,
+    borderRadius: 12,
+    padding: 16,
+    marginBottom: 16,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: Colors.border,
+    gap: 10,
+  },
+  monthProgressHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  monthProgressLabel: {
+    fontSize: FontSize.xs,
+    fontWeight: '500',
+    color: Colors.textSecondary,
+  },
+  monthProgressCount: {
+    fontSize: FontSize.xs,
+    fontWeight: '700',
+    color: Colors.accent,
+  },
+  monthProgressBar: {
+    height: 5,
+    backgroundColor: Colors.background,
+    borderRadius: 3,
+    overflow: 'hidden',
+  },
+  monthProgressFill: {
+    height: '100%',
+    backgroundColor: Colors.accent,
+    borderRadius: 3,
   },
 
   // 액션 섹션

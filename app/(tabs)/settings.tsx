@@ -22,6 +22,9 @@ import { Typography, FontSize } from '@/src/constants/typography';
 import { CATEGORY_LABELS, MissionCategory } from '@/src/types';
 import type { AppSettings } from '@/src/types';
 import { getSettings, updateSettings } from '@/src/utils/database';
+import { rescheduleNotifications } from '@/src/utils/notifications';
+
+const MINUTE_OPTIONS = [0, 10, 20, 30, 40, 50];
 
 const ALL_CATEGORIES: MissionCategory[] = [
   'relationship',
@@ -31,6 +34,57 @@ const ALL_CATEGORIES: MissionCategory[] = [
   'environment',
   'growth',
 ];
+
+function TimeEditor({
+  hour, minute, onHourUp, onHourDown, onMinuteSelect, onSave, onCancel,
+}: {
+  hour: number; minute: number;
+  onHourUp: () => void; onHourDown: () => void;
+  onMinuteSelect: (m: number) => void;
+  onSave: () => void; onCancel: () => void;
+}) {
+  return (
+    <View style={styles.timeEditor}>
+      {/* 시 조정 */}
+      <View style={styles.timeEditorRow}>
+        <View style={styles.hourGroup}>
+          <Pressable style={({ pressed }) => [styles.hourBtn, pressed && { opacity: 0.6 }]} onPress={onHourUp}>
+            <Feather name="chevron-up" size={18} color={Colors.label} />
+          </Pressable>
+          <Text style={styles.hourValue}>{String(hour).padStart(2, '0')}</Text>
+          <Pressable style={({ pressed }) => [styles.hourBtn, pressed && { opacity: 0.6 }]} onPress={onHourDown}>
+            <Feather name="chevron-down" size={18} color={Colors.label} />
+          </Pressable>
+        </View>
+        <Text style={styles.timeColon}>:</Text>
+        <Text style={styles.hourValue}>{String(minute).padStart(2, '0')}</Text>
+      </View>
+      {/* 분 선택 */}
+      <View style={styles.minuteGrid}>
+        {MINUTE_OPTIONS.map((m) => (
+          <Pressable
+            key={m}
+            style={[styles.minuteBtn, minute === m && styles.minuteBtnSelected]}
+            onPress={() => onMinuteSelect(m)}
+          >
+            <Text style={[styles.minuteBtnText, minute === m && styles.minuteBtnTextSelected]}>
+              {String(m).padStart(2, '0')}
+            </Text>
+          </Pressable>
+        ))}
+      </View>
+      {/* 저장/취소 */}
+      <View style={styles.timeEditorActions}>
+        <Pressable style={styles.cancelBtn} onPress={onCancel}>
+          <Text style={styles.cancelBtnText}>취소</Text>
+        </Pressable>
+        <Pressable style={styles.saveBtn} onPress={onSave}>
+          <Text style={styles.saveBtnText}>저장</Text>
+        </Pressable>
+      </View>
+    </View>
+  );
+}
 
 function SectionHeader({ title }: { title: string }) {
   return (
@@ -77,6 +131,9 @@ function SettingRow({
 
 export default function SettingsScreen() {
   const [settings, setSettings] = useState<AppSettings | null>(null);
+  const [editingTime, setEditingTime] = useState<'morning' | 'evening' | null>(null);
+  const [editHour, setEditHour] = useState(8);
+  const [editMinute, setEditMinute] = useState(0);
 
   useFocusEffect(
     useCallback(() => {
@@ -90,6 +147,31 @@ export default function SettingsScreen() {
       setSettings(s);
     } catch (error) {
       console.warn('설정 로드 오류:', error);
+    }
+  }
+
+  function handleEditTime(type: 'morning' | 'evening') {
+    if (!settings) return;
+    const timeStr = type === 'morning' ? settings.morningTime : settings.eveningTime;
+    const [h, m] = timeStr.split(':').map(Number);
+    setEditHour(h ?? 8);
+    setEditMinute(m ?? 0);
+    setEditingTime(editingTime === type ? null : type);
+  }
+
+  async function handleSaveTime() {
+    if (!settings || !editingTime) return;
+    const timeStr = `${String(editHour).padStart(2, '0')}:${String(editMinute).padStart(2, '0')}`;
+    const updated = editingTime === 'morning'
+      ? { ...settings, morningTime: timeStr }
+      : { ...settings, eveningTime: timeStr };
+    setSettings(updated);
+    updateSettings(editingTime === 'morning' ? { morningTime: timeStr } : { eveningTime: timeStr });
+    setEditingTime(null);
+    try {
+      await rescheduleNotifications(updated.morningTime, updated.eveningTime);
+    } catch (e) {
+      console.warn('알림 재예약 실패', e);
     }
   }
 
@@ -178,19 +260,51 @@ export default function SettingsScreen() {
               <View style={styles.rowDivider} />
               <SettingRow
                 label="아침 알림"
-                value={settings.morningTime}
-                onPress={() =>
-                  Alert.alert('준비 중', '알림 시간 설정은 다음 업데이트에서 지원됩니다.')
+                value={editingTime === 'morning' ? `${String(editHour).padStart(2,'0')}:${String(editMinute).padStart(2,'0')}` : settings.morningTime}
+                onPress={() => handleEditTime('morning')}
+                rightElement={
+                  <Feather
+                    name={editingTime === 'morning' ? 'chevron-up' : 'chevron-down'}
+                    size={16}
+                    color={Colors.textTertiary}
+                  />
                 }
               />
+              {editingTime === 'morning' && (
+                <TimeEditor
+                  hour={editHour}
+                  minute={editMinute}
+                  onHourUp={() => setEditHour(h => Math.min(23, h + 1))}
+                  onHourDown={() => setEditHour(h => Math.max(0, h - 1))}
+                  onMinuteSelect={(m) => setEditMinute(m)}
+                  onSave={handleSaveTime}
+                  onCancel={() => setEditingTime(null)}
+                />
+              )}
               <View style={styles.rowDivider} />
               <SettingRow
                 label="저녁 알림"
-                value={settings.eveningTime}
-                onPress={() =>
-                  Alert.alert('준비 중', '알림 시간 설정은 다음 업데이트에서 지원됩니다.')
+                value={editingTime === 'evening' ? `${String(editHour).padStart(2,'0')}:${String(editMinute).padStart(2,'0')}` : settings.eveningTime}
+                onPress={() => handleEditTime('evening')}
+                rightElement={
+                  <Feather
+                    name={editingTime === 'evening' ? 'chevron-up' : 'chevron-down'}
+                    size={16}
+                    color={Colors.textTertiary}
+                  />
                 }
               />
+              {editingTime === 'evening' && (
+                <TimeEditor
+                  hour={editHour}
+                  minute={editMinute}
+                  onHourUp={() => setEditHour(h => Math.min(23, h + 1))}
+                  onHourDown={() => setEditHour(h => Math.max(0, h - 1))}
+                  onMinuteSelect={(m) => setEditMinute(m)}
+                  onSave={handleSaveTime}
+                  onCancel={() => setEditingTime(null)}
+                />
+              )}
             </>
           )}
         </View>
@@ -383,6 +497,58 @@ const styles = StyleSheet.create({
   categoryChipTextSelected: {
     color: Colors.white,
   },
+
+  // 시간 편집기
+  timeEditor: {
+    backgroundColor: Colors.background,
+    paddingHorizontal: 16,
+    paddingVertical: 16,
+    gap: 14,
+    borderTopWidth: StyleSheet.hairlineWidth,
+    borderTopColor: Colors.border,
+  },
+  timeEditorRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 8,
+  },
+  hourGroup: { alignItems: 'center', gap: 4 },
+  hourBtn: {
+    width: 36, height: 36, borderRadius: 8,
+    backgroundColor: Colors.white, borderWidth: 1, borderColor: Colors.border,
+    justifyContent: 'center', alignItems: 'center',
+  },
+  hourValue: {
+    fontSize: FontSize['2xl'], fontWeight: '700',
+    color: Colors.label, letterSpacing: -0.5, minWidth: 52, textAlign: 'center',
+  },
+  timeColon: {
+    fontSize: FontSize['2xl'], fontWeight: '700', color: Colors.label,
+  },
+  minuteGrid: {
+    flexDirection: 'row', flexWrap: 'wrap', gap: 8, justifyContent: 'center',
+  },
+  minuteBtn: {
+    width: '30%', paddingVertical: 10, borderRadius: 8,
+    backgroundColor: Colors.white, alignItems: 'center',
+    borderWidth: 1, borderColor: Colors.border,
+  },
+  minuteBtnSelected: { backgroundColor: Colors.label, borderColor: Colors.label },
+  minuteBtnText: { fontSize: FontSize.sm, fontWeight: '600', color: Colors.label },
+  minuteBtnTextSelected: { color: Colors.white },
+  timeEditorActions: { flexDirection: 'row', gap: 10 },
+  cancelBtn: {
+    flex: 1, paddingVertical: 12, borderRadius: 10,
+    backgroundColor: Colors.white, borderWidth: 1, borderColor: Colors.border,
+    alignItems: 'center',
+  },
+  cancelBtnText: { fontSize: FontSize.base, color: Colors.textSecondary, fontWeight: '500' },
+  saveBtn: {
+    flex: 2, paddingVertical: 12, borderRadius: 10,
+    backgroundColor: Colors.accent, alignItems: 'center',
+  },
+  saveBtnText: { fontSize: FontSize.base, color: Colors.white, fontWeight: '600' },
 
   // 푸터
   footer: {
