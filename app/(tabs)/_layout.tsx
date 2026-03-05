@@ -43,6 +43,16 @@ export default function TabLayout() {
           ),
         }}
       />
+      {/* 프로필 탭 */}
+      <Tabs.Screen
+        name="profile"
+        options={{
+          title: '나',
+          tabBarIcon: ({ color, focused }) => (
+            <TabBarIcon name="user" color={color} focused={focused} />
+          ),
+        }}
+      />
       {/* 설정 탭 */}
       <Tabs.Screen
         name="settings"

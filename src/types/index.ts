@@ -43,6 +43,7 @@ export interface AppSettings {
   streakCount: number;                          // 연속 실천 일수
   lastCheckinDate?: string;                     // YYYY-MM-DD
   onboardingDone: boolean;
+  nickname?: string;
 }
 
 // 카테고리 한국어 레이블 매핑

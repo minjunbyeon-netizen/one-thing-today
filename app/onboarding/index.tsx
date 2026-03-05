@@ -48,6 +48,7 @@ type Step = 1 | 2 | 3;
 
 export default function OnboardingScreen() {
   const [step, setStep] = useState<Step>(1);
+  const [nickname, setNickname] = useState('');
   const [selectedCategories, setSelectedCategories] = useState<MissionCategory[]>([]);
   const [selectAll, setSelectAll] = useState(false);
   const [morningHour, setMorningHour] = useState(8);
@@ -134,6 +135,7 @@ export default function OnboardingScreen() {
     // 설정 저장
     updateSettings({
       onboardingDone: true,
+      nickname: nickname.trim() || undefined,
       selectedCategories:
         selectAll || selectedCategories.length === ALL_CATEGORIES.length
           ? 'all'
@@ -187,6 +189,21 @@ export default function OnboardingScreen() {
               <Text style={styles.tagline}>
                 매일 딱 하나만.{'\n'}어제보다 조금 더 나은 오늘.
               </Text>
+
+              {/* 닉네임 입력 */}
+              <View style={styles.nicknameBox}>
+                <Text style={styles.nicknameLabel}>이름 (선택)</Text>
+                <TextInput
+                  style={styles.nicknameInput}
+                  value={nickname}
+                  onChangeText={setNickname}
+                  placeholder="어떻게 불러드릴까요?"
+                  placeholderTextColor={Colors.textTertiary}
+                  maxLength={16}
+                  returnKeyType="done"
+                  autoCorrect={false}
+                />
+              </View>
             </View>
 
             <View style={styles.welcomeDesc}>
@@ -546,6 +563,28 @@ const styles = StyleSheet.create({
     color: Colors.textSecondary,
     textAlign: 'center',
     lineHeight: FontSize.md * 1.6,
+  },
+  nicknameBox: {
+    width: '100%',
+    gap: 6,
+    marginTop: 8,
+  },
+  nicknameLabel: {
+    fontSize: FontSize.xs,
+    fontWeight: '600',
+    color: Colors.textSecondary,
+    textTransform: 'uppercase',
+    letterSpacing: 0.5,
+  },
+  nicknameInput: {
+    backgroundColor: Colors.white,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: Colors.border,
+    paddingHorizontal: 16,
+    paddingVertical: 14,
+    fontSize: FontSize.base,
+    color: Colors.label,
   },
   welcomeDesc: {
     gap: 14,

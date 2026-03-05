@@ -5,15 +5,16 @@
 
 import { Stack, router } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
-import { useEffect, useState } from 'react';
-import { View, ActivityIndicator, StyleSheet } from 'react-native';
-// SafeAreaView는 react-native-safe-area-context 에서 가져온다
+import { useEffect, useState, useRef } from 'react';
+import { View, Text, Animated, StyleSheet } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import 'react-native-reanimated';
+import { Feather } from '@expo/vector-icons';
 
 import { initDatabase, getSettings } from '@/src/utils/database';
 import { requestNotificationPermission } from '@/src/utils/notifications';
 import { Colors } from '@/src/constants/colors';
+import { FontSize } from '@/src/constants/typography';
 
 export const unstable_settings = {
   anchor: '(tabs)',
@@ -23,20 +24,28 @@ export default function RootLayout() {
   const [isReady, setIsReady] = useState(false);
   const [onboardingDone, setOnboardingDone] = useState(false);
 
+  // 스플래시 애니메이션
+  const logoScale = useRef(new Animated.Value(0.8)).current;
+  const logoOpacity = useRef(new Animated.Value(0)).current;
+
   useEffect(() => {
+    // 로고 등장 애니메이션
+    Animated.parallel([
+      Animated.timing(logoOpacity, { toValue: 1, duration: 400, useNativeDriver: true }),
+      Animated.spring(logoScale, { toValue: 1, friction: 6, useNativeDriver: true }),
+    ]).start();
+
     async function prepare() {
       try {
-        // DB 초기화
         initDatabase();
         const settings = getSettings();
         setOnboardingDone(settings.onboardingDone);
-
-        // 알림 권한 요청 (비동기, 실패해도 앱 진행)
         await requestNotificationPermission();
       } catch (error) {
         console.warn('앱 초기화 오류:', error);
       } finally {
-        setIsReady(true);
+        // 최소 1초 스플래시 노출
+        setTimeout(() => setIsReady(true), 1000);
       }
     }
     prepare();
@@ -49,12 +58,18 @@ export default function RootLayout() {
     }
   }, [isReady, onboardingDone]);
 
-  // 초기화 중 로딩 화면
+  // 스플래시 화면
   if (!isReady) {
     return (
       <SafeAreaProvider>
-        <View style={styles.loading}>
-          <ActivityIndicator size="large" color={Colors.accent} />
+        <View style={styles.splash}>
+          <Animated.View style={[styles.splashContent, { opacity: logoOpacity, transform: [{ scale: logoScale }] }]}>
+            <View style={styles.splashLogo}>
+              <Feather name="sun" size={40} color={Colors.accent} />
+            </View>
+            <Text style={styles.splashTitle}>오늘 하나</Text>
+            <Text style={styles.splashSub}>One Thing Today</Text>
+          </Animated.View>
         </View>
       </SafeAreaProvider>
     );
@@ -94,10 +109,42 @@ export default function RootLayout() {
 }
 
 const styles = StyleSheet.create({
-  loading: {
+  splash: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: Colors.background,
+  },
+  splashContent: {
+    alignItems: 'center',
+    gap: 12,
+  },
+  splashLogo: {
+    width: 88,
+    height: 88,
+    borderRadius: 22,
+    backgroundColor: Colors.white,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: Colors.border,
+    shadowColor: Colors.black,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.08,
+    shadowRadius: 16,
+    elevation: 4,
+    marginBottom: 8,
+  },
+  splashTitle: {
+    fontSize: FontSize['2xl'],
+    fontWeight: '700',
+    color: Colors.label,
+    letterSpacing: -0.5,
+  },
+  splashSub: {
+    fontSize: FontSize.sm,
+    color: Colors.textTertiary,
+    fontWeight: '400',
+    letterSpacing: 0.5,
   },
 });

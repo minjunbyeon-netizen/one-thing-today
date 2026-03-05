@@ -67,6 +67,7 @@ function _insertDefaultSettings(db: SQLite.SQLiteDatabase): void {
     streakCount: '0',
     lastCheckinDate: '',
     onboardingDone: 'false',
+    nickname: '',
   };
 
   for (const [key, value] of Object.entries(defaults)) {
@@ -153,6 +154,28 @@ export function getRecentCheckins(days: number = 30): CheckIn[] {
     'SELECT * FROM checkins ORDER BY date DESC LIMIT ?',
     [days]
   );
+  return rows.map(_rowToCheckin);
+}
+
+/** 특정 월의 체크인 목록 조회 (yearMonth: "YYYY-MM") */
+export function getCheckinsByMonth(yearMonth: string): CheckIn[] {
+  const db = getDb();
+  const rows = db.getAllSync<{
+    id: number; date: string; mission_id: string; mission_text: string;
+    category: string; status: string; memo: string | null;
+    created_at: string; updated_at: string;
+  }>('SELECT * FROM checkins WHERE date LIKE ? ORDER BY date ASC', [`${yearMonth}%`]);
+  return rows.map(_rowToCheckin);
+}
+
+/** 전체 체크인 목록 조회 */
+export function getAllCheckins(): CheckIn[] {
+  const db = getDb();
+  const rows = db.getAllSync<{
+    id: number; date: string; mission_id: string; mission_text: string;
+    category: string; status: string; memo: string | null;
+    created_at: string; updated_at: string;
+  }>('SELECT * FROM checkins ORDER BY date DESC');
   return rows.map(_rowToCheckin);
 }
 
@@ -291,6 +314,7 @@ function _mapToSettings(map: Record<string, string>): AppSettings {
     streakCount: parseInt(map.streakCount ?? '0', 10),
     lastCheckinDate: map.lastCheckinDate || undefined,
     onboardingDone: map.onboardingDone === 'true',
+    nickname: map.nickname || undefined,
   };
 }
 
