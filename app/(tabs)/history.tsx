@@ -19,6 +19,12 @@ import { FontSize } from '@/src/constants/typography';
 import { CATEGORY_LABELS } from '@/src/types';
 import type { CheckIn } from '@/src/types';
 import { getCheckinsByMonth } from '@/src/utils/database';
+import { MISSIONS } from '@/src/data/missions';
+
+function getMissionText(missionId: string, fallback: string): string {
+  const found = MISSIONS.find(m => m.id === missionId);
+  return found ? (found.shortText ?? found.text) : fallback;
+}
 
 const WEEKDAYS = ['일', '월', '화', '수', '목', '금', '토'];
 
@@ -241,7 +247,7 @@ export default function HistoryScreen() {
                   </View>
                 </View>
                 {/* 미션 텍스트 */}
-                <Text style={styles.detailMission}>{selectedCheckin.missionText}</Text>
+                <Text style={styles.detailMission}>{getMissionText(selectedCheckin.missionId, selectedCheckin.missionText)}</Text>
                 {/* 메모 */}
                 {selectedCheckin.memo ? (
                   <Text style={styles.detailMemo}>"{selectedCheckin.memo}"</Text>

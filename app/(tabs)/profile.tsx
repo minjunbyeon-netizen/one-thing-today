@@ -19,6 +19,12 @@ import { FontSize } from '@/src/constants/typography';
 import { CATEGORY_LABELS, MissionCategory } from '@/src/types';
 import type { CheckIn } from '@/src/types';
 import { getAllCheckins, getSettings, getStreak } from '@/src/utils/database';
+import { MISSIONS } from '@/src/data/missions';
+
+function getMissionText(missionId: string, fallback: string): string {
+  const found = MISSIONS.find(m => m.id === missionId);
+  return found ? (found.shortText ?? found.text) : fallback;
+}
 
 const ALL_CATEGORIES: MissionCategory[] = [
   'relationship', 'selfcare', 'gratitude', 'restraint', 'environment', 'growth',
@@ -84,12 +90,16 @@ export default function ProfileScreen() {
           </View>
         )}
 
-        {/* 통계 카드 */}
+        {/* 통계 카드 — 2×2 그리드 */}
         <View style={styles.statsGrid}>
-          <StatBox value={String(total)} label="전체 도전" />
-          <StatBox value={String(done)} label="성공" color={Colors.success} />
-          <StatBox value={String(undone)} label="미완료" color={Colors.disabled} />
-          <StatBox value={`${rate}%`} label="달성률" color={Colors.accent} />
+          <View style={styles.statsRow}>
+            <StatBox value={String(total)} label="전체 도전" />
+            <StatBox value={String(done)} label="성공" color={Colors.success} />
+          </View>
+          <View style={styles.statsRow}>
+            <StatBox value={String(undone)} label="미완료" color={Colors.disabled} />
+            <StatBox value={`${rate}%`} label="달성률" color={Colors.accent} />
+          </View>
         </View>
 
         {/* 카테고리별 현황 */}
@@ -142,7 +152,7 @@ export default function ProfileScreen() {
                     <View style={styles.historyContent}>
                       <Text style={styles.historyDate}>{formatDate(c.date)}</Text>
                       <Text style={styles.historyMission} numberOfLines={1}>
-                        {c.missionText}
+                        {getMissionText(c.missionId, c.missionText)}
                       </Text>
                     </View>
                     <View
@@ -239,9 +249,12 @@ const styles = StyleSheet.create({
 
   // 통계 그리드
   statsGrid: {
-    flexDirection: 'row',
     gap: 10,
     marginBottom: 24,
+  },
+  statsRow: {
+    flexDirection: 'row',
+    gap: 10,
   },
   statBox: {
     flex: 1,
@@ -249,7 +262,7 @@ const styles = StyleSheet.create({
     borderRadius: 14,
     borderWidth: 1,
     borderColor: Colors.border,
-    padding: 14,
+    padding: 16,
     alignItems: 'center',
     gap: 4,
   },

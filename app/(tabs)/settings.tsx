@@ -209,7 +209,6 @@ export default function SettingsScreen() {
                 style={({ pressed }) => [
                   styles.categoryChip,
                   selected && styles.categoryChipSelected,
-                  { borderColor: Colors.categories[cat] },
                   pressed && styles.categoryChipPressed,
                 ]}
                 onPress={() => handleCategoryToggle(cat)}
@@ -217,12 +216,12 @@ export default function SettingsScreen() {
                 accessibilityState={{ checked: selected }}
               >
                 {selected && (
-                  <Feather name="check" size={12} color={Colors.categories[cat]} />
+                  <Feather name="check" size={12} color={Colors.white} />
                 )}
                 <Text
                   style={[
                     styles.categoryChipText,
-                    { color: selected ? Colors.categories[cat] : Colors.textSecondary },
+                    selected && styles.categoryChipTextSelected,
                   ]}
                 >
                   {CATEGORY_LABELS[cat]}
@@ -366,10 +365,12 @@ const styles = StyleSheet.create({
     paddingVertical: 9,
     borderRadius: 24,
     borderWidth: 1.5,
+    borderColor: Colors.border,
     backgroundColor: Colors.white,
   },
   categoryChipSelected: {
-    // 선택된 경우 배경을 살짝 변경 — 카테고리 bg 색상이 다양해서 인라인으로 처리
+    backgroundColor: Colors.label,
+    borderColor: Colors.label,
   },
   categoryChipPressed: {
     opacity: 0.7,
@@ -377,6 +378,10 @@ const styles = StyleSheet.create({
   categoryChipText: {
     fontSize: FontSize.sm,
     fontWeight: '500',
+    color: Colors.textSecondary,
+  },
+  categoryChipTextSelected: {
+    color: Colors.white,
   },
 
   // 푸터

@@ -94,14 +94,6 @@ export default function RootLayout() {
             animation: 'slide_from_bottom',
           }}
         />
-        {/* 체크인 결과 모달 */}
-        <Stack.Screen
-          name="checkin-result"
-          options={{
-            presentation: 'modal',
-            headerShown: false,
-          }}
-        />
       </Stack>
       <StatusBar style="dark" backgroundColor={Colors.background} />
     </SafeAreaProvider>
