@@ -187,7 +187,7 @@ export default function OnboardingScreen() {
 
               <Text style={styles.appName}>오늘 하나</Text>
               <Text style={styles.tagline}>
-                매일 딱 하나만.{'\n'}어제보다 조금 더 나은 오늘.
+                거창하지 않아도 괜찮아요.{'\n'}오늘 딱 하나만.
               </Text>
 
               {/* 닉네임 입력 */}
@@ -209,15 +209,15 @@ export default function OnboardingScreen() {
             <View style={styles.welcomeDesc}>
               <View style={styles.descRow}>
                 <Feather name="check-circle" size={18} color={Colors.accent} />
-                <Text style={styles.descText}>하루 하나의 작은 약속</Text>
+                <Text style={styles.descText}>작은 약속 하나가 하루를 바꿔요</Text>
               </View>
               <View style={styles.descRow}>
                 <Feather name="repeat" size={18} color={Colors.accent} />
-                <Text style={styles.descText}>꾸준함이 만드는 변화</Text>
+                <Text style={styles.descText}>부담 없이, 매일 딱 하나</Text>
               </View>
               <View style={styles.descRow}>
                 <Feather name="bell" size={18} color={Colors.accent} />
-                <Text style={styles.descText}>적절한 시간에 알림</Text>
+                <Text style={styles.descText}>알림이 잊지 않게 도와드려요</Text>
               </View>
             </View>
 
@@ -364,8 +364,7 @@ export default function OnboardingScreen() {
                   minute={morningMinute}
                   onHourUp={() => adjustHour('morning', 1)}
                   onHourDown={() => adjustHour('morning', -1)}
-                  onMinuteUp={() => adjustMinute('morning', 10)}
-                  onMinuteDown={() => adjustMinute('morning', -10)}
+                  onMinuteSelect={(m) => setMorningMinute(m)}
                 />
               </View>
 
@@ -383,8 +382,7 @@ export default function OnboardingScreen() {
                   minute={eveningMinute}
                   onHourUp={() => adjustHour('evening', 1)}
                   onHourDown={() => adjustHour('evening', -1)}
-                  onMinuteUp={() => adjustMinute('evening', 10)}
-                  onMinuteDown={() => adjustMinute('evening', -10)}
+                  onMinuteSelect={(m) => setEveningMinute(m)}
                 />
               </View>
             </ScrollView>
@@ -423,13 +421,14 @@ export default function OnboardingScreen() {
 // 시간 조정 컴포넌트
 // ──────────────────────────────────────────────────────────
 
+const MINUTE_OPTIONS = [0, 10, 20, 30, 40, 50];
+
 interface TimeAdjusterProps {
   hour: number;
   minute: number;
   onHourUp: () => void;
   onHourDown: () => void;
-  onMinuteUp: () => void;
-  onMinuteDown: () => void;
+  onMinuteSelect: (m: number) => void;
 }
 
 function TimeAdjuster({
@@ -437,49 +436,59 @@ function TimeAdjuster({
   minute,
   onHourUp,
   onHourDown,
-  onMinuteUp,
-  onMinuteDown,
+  onMinuteSelect,
 }: TimeAdjusterProps) {
   return (
-    <View style={styles.adjusterRow}>
-      {/* 시 조정 */}
-      <View style={styles.adjusterGroup}>
-        <Pressable
-          style={({ pressed }) => [styles.adjBtn, pressed && styles.adjBtnPressed]}
-          onPress={onHourUp}
-          accessibilityLabel="시간 증가"
-        >
-          <Feather name="chevron-up" size={20} color={Colors.label} />
-        </Pressable>
-        <Text style={styles.adjValue}>{String(hour).padStart(2, '0')}</Text>
-        <Pressable
-          style={({ pressed }) => [styles.adjBtn, pressed && styles.adjBtnPressed]}
-          onPress={onHourDown}
-          accessibilityLabel="시간 감소"
-        >
-          <Feather name="chevron-down" size={20} color={Colors.label} />
-        </Pressable>
+    <View style={styles.adjusterContainer}>
+      {/* 시 조정 + 현재 시간 표시 */}
+      <View style={styles.adjusterRow}>
+        <View style={styles.adjusterGroup}>
+          <Pressable
+            style={({ pressed }) => [styles.adjBtn, pressed && styles.adjBtnPressed]}
+            onPress={onHourUp}
+            accessibilityLabel="시간 증가"
+          >
+            <Feather name="chevron-up" size={20} color={Colors.label} />
+          </Pressable>
+          <Text style={styles.adjValue}>{String(hour).padStart(2, '0')}</Text>
+          <Pressable
+            style={({ pressed }) => [styles.adjBtn, pressed && styles.adjBtnPressed]}
+            onPress={onHourDown}
+            accessibilityLabel="시간 감소"
+          >
+            <Feather name="chevron-down" size={20} color={Colors.label} />
+          </Pressable>
+        </View>
+
+        <Text style={styles.adjColon}>:</Text>
+
+        {/* 현재 선택된 분 표시 */}
+        <Text style={styles.adjValue}>{String(minute).padStart(2, '0')}</Text>
       </View>
 
-      <Text style={styles.adjColon}>:</Text>
-
-      {/* 분 조정 (10분 단위) */}
-      <View style={styles.adjusterGroup}>
-        <Pressable
-          style={({ pressed }) => [styles.adjBtn, pressed && styles.adjBtnPressed]}
-          onPress={onMinuteUp}
-          accessibilityLabel="분 증가"
-        >
-          <Feather name="chevron-up" size={20} color={Colors.label} />
-        </Pressable>
-        <Text style={styles.adjValue}>{String(minute).padStart(2, '0')}</Text>
-        <Pressable
-          style={({ pressed }) => [styles.adjBtn, pressed && styles.adjBtnPressed]}
-          onPress={onMinuteDown}
-          accessibilityLabel="분 감소"
-        >
-          <Feather name="chevron-down" size={20} color={Colors.label} />
-        </Pressable>
+      {/* 분 선택 버튼 그리드 */}
+      <View style={styles.minuteGrid}>
+        {MINUTE_OPTIONS.map((m) => (
+          <Pressable
+            key={m}
+            style={({ pressed }) => [
+              styles.minuteBtn,
+              minute === m && styles.minuteBtnSelected,
+              pressed && styles.adjBtnPressed,
+            ]}
+            onPress={() => onMinuteSelect(m)}
+            accessibilityLabel={`${m}분`}
+          >
+            <Text
+              style={[
+                styles.minuteBtnText,
+                minute === m && styles.minuteBtnTextSelected,
+              ]}
+            >
+              {String(m).padStart(2, '0')}
+            </Text>
+          </Pressable>
+        ))}
       </View>
     </View>
   );
@@ -721,6 +730,9 @@ const styles = StyleSheet.create({
   },
 
   // 시간 조정
+  adjusterContainer: {
+    gap: 16,
+  },
   adjusterRow: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -754,7 +766,34 @@ const styles = StyleSheet.create({
     fontSize: FontSize['2xl'],
     fontWeight: '700',
     color: Colors.label,
-    marginTop: -8,
+  },
+  // 분 선택 그리드
+  minuteGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 8,
+    justifyContent: 'center',
+  },
+  minuteBtn: {
+    width: '30%',
+    paddingVertical: 12,
+    borderRadius: 10,
+    backgroundColor: Colors.background,
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: Colors.border,
+  },
+  minuteBtnSelected: {
+    backgroundColor: Colors.accent,
+    borderColor: Colors.accent,
+  },
+  minuteBtnText: {
+    fontSize: FontSize.base,
+    fontWeight: '600',
+    color: Colors.label,
+  },
+  minuteBtnTextSelected: {
+    color: Colors.white,
   },
 
   // 하단 네비게이션 행

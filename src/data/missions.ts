@@ -11,7 +11,7 @@ export const MISSIONS: Mission[] = [
   // ──────────────────────────────────────────────────────────
   {
     id: 'rel-01',
-    text: '오늘 부모님께 전화해서 안부를 여쭤보세요. 짧은 통화라도 충분합니다.',
+    text: '부모님께 짧은 전화 한 통. 목소리만 들어도 서로 힘이 됩니다.',
     shortText: '부모님께 안부 전화하기',
     category: 'relationship',
     difficulty: 1,
@@ -19,7 +19,7 @@ export const MISSIONS: Mission[] = [
   },
   {
     id: 'rel-02',
-    text: '오랫동안 연락하지 못한 친구에게 먼저 안부 메시지를 보내보세요.',
+    text: '오래된 친구에게 먼저 연락하기. 관계는 먼저 손 내미는 쪽이 만듭니다.',
     shortText: '오래된 친구에게 먼저 연락하기',
     category: 'relationship',
     difficulty: 1,
@@ -27,7 +27,7 @@ export const MISSIONS: Mission[] = [
   },
   {
     id: 'rel-03',
-    text: '오늘 대화할 때 상대방의 말을 끊지 않고 끝까지 들어주세요.',
+    text: '상대방 말 끝까지 듣기. 끊지 않는 것만으로 신뢰가 쌓입니다.',
     shortText: '상대방 말 끝까지 듣기',
     category: 'relationship',
     difficulty: 2,
@@ -35,7 +35,7 @@ export const MISSIONS: Mission[] = [
   },
   {
     id: 'rel-04',
-    text: '함께 일하는 동료 한 명에게 진심 어린 칭찬 한 마디를 건네보세요.',
+    text: '동료에게 진심 어린 칭찬 한 마디. 작은 인정이 관계를 바꿉니다.',
     shortText: '동료에게 진심 어린 칭찬하기',
     category: 'relationship',
     difficulty: 1,
@@ -43,7 +43,7 @@ export const MISSIONS: Mission[] = [
   },
   {
     id: 'rel-05',
-    text: '오늘 누군가와 식사할 때 스마트폰을 뒤집어 놓고 대화에 집중해보세요.',
+    text: '식사 중 스마트폰 뒤집어 놓기. 함께 있는 사람이 진짜 우선순위입니다.',
     shortText: '식사 중 스마트폰 내려놓기',
     category: 'relationship',
     difficulty: 2,
@@ -51,7 +51,7 @@ export const MISSIONS: Mission[] = [
   },
   {
     id: 'rel-06',
-    text: '가족 중 한 명에게 오늘 하루 어땠는지 진심으로 물어봐 주세요.',
+    text: '가족에게 "오늘 어땠어?" 한 마디. 관심이 관계를 살립니다.',
     shortText: '가족에게 하루 이야기 묻기',
     category: 'relationship',
     difficulty: 1,
@@ -59,7 +59,7 @@ export const MISSIONS: Mission[] = [
   },
   {
     id: 'rel-07',
-    text: '오늘 누군가와 의견이 다를 때, 즉각 반박하지 말고 먼저 "그럴 수도 있겠다"고 생각해보세요.',
+    text: '의견 충돌 시 즉각 반박 대신 "그럴 수도 있겠다" 먼저 떠올리기.',
     shortText: '다른 의견 먼저 인정해보기',
     category: 'relationship',
     difficulty: 3,
@@ -67,7 +67,7 @@ export const MISSIONS: Mission[] = [
   },
   {
     id: 'rel-08',
-    text: '최근에 도움받은 사람에게 감사 메시지나 카드를 전해보세요.',
+    text: '도움받은 사람에게 감사 메시지 전하기. 감사는 표현해야 전달됩니다.',
     shortText: '도움받은 사람에게 감사 전하기',
     category: 'relationship',
     difficulty: 1,
@@ -75,7 +75,7 @@ export const MISSIONS: Mission[] = [
   },
   {
     id: 'rel-09',
-    text: '오늘 처음 만나는 사람에게 밝게 인사해보세요. 작은 미소도 충분합니다.',
+    text: '처음 만나는 사람에게 밝게 인사하기. 작은 미소가 첫인상을 만듭니다.',
     shortText: '처음 만나는 사람에게 밝게 인사하기',
     category: 'relationship',
     difficulty: 1,
@@ -83,7 +83,7 @@ export const MISSIONS: Mission[] = [
   },
   {
     id: 'rel-10',
-    text: '사이가 소원해진 지인에게 먼저 손을 내밀어 화해의 메시지를 보내보세요.',
+    text: '소원해진 지인에게 먼저 화해 메시지 보내기. 용기가 관계를 회복합니다.',
     shortText: '소원해진 지인에게 화해 메시지 보내기',
     category: 'relationship',
     difficulty: 3,
@@ -95,7 +95,7 @@ export const MISSIONS: Mission[] = [
   // ──────────────────────────────────────────────────────────
   {
     id: 'self-01',
-    text: '오늘 물을 8잔(약 2리터) 마셔보세요. 물병을 책상에 올려두면 도움이 됩니다.',
+    text: '물 8잔 마시기. 물병을 책상에 두면 자연스럽게 지킬 수 있습니다.',
     shortText: '물 8잔 마시기',
     category: 'selfcare',
     difficulty: 1,
@@ -103,7 +103,7 @@ export const MISSIONS: Mission[] = [
   },
   {
     id: 'self-02',
-    text: '점심 식사 후 10분만 걸어보세요. 짧은 산책이 오후 집중력을 높여줍니다.',
+    text: '점심 후 10분 걷기. 짧은 산책이 오후 집중력을 끌어올립니다.',
     shortText: '점심 후 10분 걷기',
     category: 'selfcare',
     difficulty: 1,
@@ -111,7 +111,7 @@ export const MISSIONS: Mission[] = [
   },
   {
     id: 'self-03',
-    text: '오늘 밤 자정 전에 잠자리에 들어보세요. 수면이 내일의 당신을 만듭니다.',
+    text: '자정 전 잠자리 들기. 오늘의 수면이 내일의 나를 만듭니다.',
     shortText: '자정 전에 잠자리 들기',
     category: 'selfcare',
     difficulty: 2,
@@ -127,7 +127,7 @@ export const MISSIONS: Mission[] = [
   },
   {
     id: 'self-05',
-    text: '업무 중 한 시간에 한 번씩, 1분간 눈을 감고 휴식을 취해보세요.',
+    text: '1시간마다 1분 눈 감고 쉬기. 눈 건강과 집중력을 동시에 지킵니다.',
     shortText: '1시간마다 1분 눈 휴식 취하기',
     category: 'selfcare',
     difficulty: 2,
@@ -135,7 +135,7 @@ export const MISSIONS: Mission[] = [
   },
   {
     id: 'self-06',
-    text: '오늘 아침 5분만 일찍 일어나서 하루를 계획해보세요.',
+    text: '5분 일찍 일어나 하루 계획하기. 아침 5분이 하루 전체를 바꿉니다.',
     shortText: '5분 일찍 일어나 하루 계획하기',
     category: 'selfcare',
     difficulty: 2,
@@ -143,7 +143,7 @@ export const MISSIONS: Mission[] = [
   },
   {
     id: 'self-07',
-    text: '오늘 허리를 곧게 펴고 앉아보세요. 1시간마다 자세를 점검해보세요.',
+    text: '바른 자세로 앉기. 1시간마다 허리를 확인하면 척추가 달라집니다.',
     shortText: '바른 자세로 앉기',
     category: 'selfcare',
     difficulty: 2,
@@ -151,7 +151,7 @@ export const MISSIONS: Mission[] = [
   },
   {
     id: 'self-08',
-    text: '오늘 저녁 스트레칭을 10분 해보세요. 유튜브 영상을 따라해도 좋습니다.',
+    text: '저녁 10분 스트레칭. 몸의 긴장을 풀어야 진짜 회복이 시작됩니다.',
     shortText: '저녁 10분 스트레칭하기',
     category: 'selfcare',
     difficulty: 1,
@@ -159,7 +159,7 @@ export const MISSIONS: Mission[] = [
   },
   {
     id: 'self-09',
-    text: '오늘 카페인 음료를 오후 2시 이후에는 마시지 않아보세요.',
+    text: '오후 2시 이후 카페인 끊기. 수면의 질이 달라집니다.',
     shortText: '오후 2시 이후 카페인 끊기',
     category: 'selfcare',
     difficulty: 2,
@@ -167,7 +167,7 @@ export const MISSIONS: Mission[] = [
   },
   {
     id: 'self-10',
-    text: '오늘 하루 중 15분만 아무것도 하지 않고 멍하게 쉬어보세요.',
+    text: '15분 완전한 휴식. 아무것도 안 하는 시간이 회복의 시작입니다.',
     shortText: '15분 완전한 휴식 취하기',
     category: 'selfcare',
     difficulty: 3,
@@ -179,7 +179,7 @@ export const MISSIONS: Mission[] = [
   // ──────────────────────────────────────────────────────────
   {
     id: 'grat-01',
-    text: '오늘 감사한 일 3가지를 노트나 메모 앱에 적어보세요. 작은 것도 괜찮습니다.',
+    text: '감사한 일 3가지 적기. 작은 것도 괜찮습니다. 쓰면 보입니다.',
     shortText: '감사한 일 3가지 적기',
     category: 'gratitude',
     difficulty: 1,
@@ -195,7 +195,7 @@ export const MISSIONS: Mission[] = [
   },
   {
     id: 'grat-03',
-    text: '오늘 서비스를 받을 때 직원에게 "감사합니다"를 눈을 마주치며 전해보세요.',
+    text: '서비스 직원에게 눈 마주치며 "감사합니다". 존중은 말이 아닌 태도입니다.',
     shortText: '서비스 직원에게 진심으로 감사 인사하기',
     category: 'gratitude',
     difficulty: 1,
@@ -203,7 +203,7 @@ export const MISSIONS: Mission[] = [
   },
   {
     id: 'grat-04',
-    text: '오늘 누군가가 힘들어 보인다면, 먼저 "괜찮아?"라고 물어봐 주세요.',
+    text: '힘들어 보이는 사람에게 "괜찮아?" 먼저 물어보기. 관심이 힘이 됩니다.',
     shortText: '힘들어 보이는 사람에게 먼저 말 걸기',
     category: 'gratitude',
     difficulty: 2,
@@ -211,7 +211,7 @@ export const MISSIONS: Mission[] = [
   },
   {
     id: 'grat-05',
-    text: '오늘 배달원, 청소부, 경비원 등 주변 분들의 수고에 감사함을 표현해보세요.',
+    text: '배달원, 청소부, 경비원 분들께 감사 표현하기. 보이지 않는 수고를 알아주세요.',
     shortText: '주변 수고하시는 분들께 감사 표현하기',
     category: 'gratitude',
     difficulty: 2,
@@ -219,7 +219,7 @@ export const MISSIONS: Mission[] = [
   },
   {
     id: 'grat-06',
-    text: '오늘 대화 중 상대방을 칭찬할 기회를 놓치지 말고 즉시 표현해보세요.',
+    text: '칭찬할 기회가 생기면 즉시 표현하기. 미룬 칭찬은 전달되지 않습니다.',
     shortText: '칭찬할 기회 즉시 표현하기',
     category: 'gratitude',
     difficulty: 2,
@@ -227,7 +227,7 @@ export const MISSIONS: Mission[] = [
   },
   {
     id: 'grat-07',
-    text: '오늘 자신에게 감사한 점 하나를 찾아보세요. 스스로를 인정하는 것도 중요합니다.',
+    text: '자신에게 감사한 점 하나 찾기. 스스로를 인정하는 것도 성장입니다.',
     shortText: '자신에게 감사한 점 찾기',
     category: 'gratitude',
     difficulty: 2,
@@ -235,7 +235,7 @@ export const MISSIONS: Mission[] = [
   },
   {
     id: 'grat-08',
-    text: '오늘 공공장소에서 어려움을 겪는 사람을 보면 도움을 제안해보세요.',
+    text: '어려움 겪는 사람에게 도움 제안하기. 작은 행동이 공동체를 만듭니다.',
     shortText: '어려움 겪는 사람에게 도움 제안하기',
     category: 'gratitude',
     difficulty: 2,
@@ -243,7 +243,7 @@ export const MISSIONS: Mission[] = [
   },
   {
     id: 'grat-09',
-    text: '오늘 내가 당연하게 여기던 것 하나(건강, 집, 음식 등)에 감사함을 느껴보세요.',
+    text: '당연하게 여기던 것 하나에 감사함 느끼기. 건강, 집, 음식 모두 괜찮습니다.',
     shortText: '당연한 것에 감사함 느끼기',
     category: 'gratitude',
     difficulty: 2,
@@ -251,7 +251,7 @@ export const MISSIONS: Mission[] = [
   },
   {
     id: 'grat-10',
-    text: '오늘 오랫동안 감사 인사를 전하지 못한 사람에게 편지나 메시지를 써보세요.',
+    text: '오래된 감사를 편지나 메시지로 전하기. 늦은 감사도 충분히 닿습니다.',
     shortText: '감사 편지 쓰기',
     category: 'gratitude',
     difficulty: 3,
@@ -263,7 +263,7 @@ export const MISSIONS: Mission[] = [
   // ──────────────────────────────────────────────────────────
   {
     id: 'rest-01',
-    text: '오늘 운전할 때 단 한 번도 경적을 울리지 않아보세요.',
+    text: '운전 중 경적 울리지 않기. 인내가 도로 위 배려를 만듭니다.',
     shortText: '운전 중 경적 울리지 않기',
     category: 'restraint',
     difficulty: 2,
@@ -271,7 +271,7 @@ export const MISSIONS: Mission[] = [
   },
   {
     id: 'rest-02',
-    text: '오늘 SNS 사용 시간을 2시간 이하로 줄여보세요. 알림을 꺼두면 도움이 됩니다.',
+    text: 'SNS 2시간 이하 사용하기. 알림을 꺼두면 훨씬 쉬워집니다.',
     shortText: 'SNS 2시간 이하로 사용하기',
     category: 'restraint',
     difficulty: 2,
@@ -279,7 +279,7 @@ export const MISSIONS: Mission[] = [
   },
   {
     id: 'rest-03',
-    text: '오늘 충동적으로 무언가를 사고 싶을 때, 하루 기다려보세요.',
+    text: '충동구매 하루 참기. 하루 뒤에도 사고 싶다면 그때 사도 늦지 않습니다.',
     shortText: '충동구매 하루 참기',
     category: 'restraint',
     difficulty: 3,
@@ -287,7 +287,7 @@ export const MISSIONS: Mission[] = [
   },
   {
     id: 'rest-04',
-    text: '오늘 누군가에게 화가 날 때, 말하기 전에 10을 세어보세요.',
+    text: '화가 날 때 말하기 전 10 세기. 0.1초의 멈춤이 후회를 막습니다.',
     shortText: '화가 날 때 10 세고 말하기',
     category: 'restraint',
     difficulty: 3,
@@ -295,7 +295,7 @@ export const MISSIONS: Mission[] = [
   },
   {
     id: 'rest-05',
-    text: '오늘 식사할 때 TV나 스마트폰 없이, 음식에만 집중해서 먹어보세요.',
+    text: '식사 중 TV·스마트폰 없이 음식에만 집중하기. 맛도 포만감도 달라집니다.',
     shortText: '식사 중 TV·스마트폰 없이 먹기',
     category: 'restraint',
     difficulty: 2,
@@ -303,7 +303,7 @@ export const MISSIONS: Mission[] = [
   },
   {
     id: 'rest-06',
-    text: '오늘 불필요한 말을 줄이고, 꼭 해야 할 말만 해보세요.',
+    text: '꼭 필요한 말만 하기. 침묵은 약점이 아니라 절제의 힘입니다.',
     shortText: '꼭 필요한 말만 하기',
     category: 'restraint',
     difficulty: 3,
@@ -311,7 +311,7 @@ export const MISSIONS: Mission[] = [
   },
   {
     id: 'rest-07',
-    text: '오늘 당도 높은 간식(사탕, 쿠키 등)을 먹고 싶을 때 한 번만 참아보세요.',
+    text: '달콤한 간식 한 번 참기. 작은 절제가 몸의 감각을 회복시킵니다.',
     shortText: '달콤한 간식 한 번 참기',
     category: 'restraint',
     difficulty: 2,
@@ -319,7 +319,7 @@ export const MISSIONS: Mission[] = [
   },
   {
     id: 'rest-08',
-    text: '오늘 이메일이나 메시지 알림을 1시간마다 한 번씩만 확인해보세요.',
+    text: '알림 1시간마다 한 번만 확인하기. 집중의 깊이가 달라집니다.',
     shortText: '알림 1시간마다 한 번만 확인하기',
     category: 'restraint',
     difficulty: 3,
@@ -327,7 +327,7 @@ export const MISSIONS: Mission[] = [
   },
   {
     id: 'rest-09',
-    text: '오늘 남 이야기(험담)를 할 뻔한 순간, 멈추고 다른 주제로 바꿔보세요.',
+    text: '험담하려는 순간 멈추고 화제 바꾸기. 말의 습관이 품격을 만듭니다.',
     shortText: '험담하려는 순간 멈추기',
     category: 'restraint',
     difficulty: 3,
@@ -335,7 +335,7 @@ export const MISSIONS: Mission[] = [
   },
   {
     id: 'rest-10',
-    text: '오늘 불평·불만을 한 번이라도 줄여보세요. 대신 해결책을 생각해보세요.',
+    text: '불평 대신 해결책 생각하기. 태도가 바뀌면 상황도 달라집니다.',
     shortText: '불평 줄이고 해결책 생각하기',
     category: 'restraint',
     difficulty: 2,
@@ -347,7 +347,7 @@ export const MISSIONS: Mission[] = [
   // ──────────────────────────────────────────────────────────
   {
     id: 'env-01',
-    text: '오늘 텀블러나 개인 컵을 사용해서 일회용 컵을 줄여보세요.',
+    text: '텀블러 사용하기. 일회용 컵 하나 줄이는 것이 환경의 시작입니다.',
     shortText: '텀블러 사용하기',
     category: 'environment',
     difficulty: 1,
@@ -355,7 +355,7 @@ export const MISSIONS: Mission[] = [
   },
   {
     id: 'env-02',
-    text: '오늘 엘리베이터 대신 계단을 이용해보세요. 3층 이하라면 충분히 가능합니다.',
+    text: '엘리베이터 대신 계단 이용하기. 3층 이하라면 에너지도 절약됩니다.',
     shortText: '엘리베이터 대신 계단 이용하기',
     category: 'environment',
     difficulty: 1,
@@ -363,7 +363,7 @@ export const MISSIONS: Mission[] = [
   },
   {
     id: 'env-03',
-    text: '오늘 안 쓰는 전기 플러그를 뽑고, 사용하지 않는 조명을 꺼보세요.',
+    text: '안 쓰는 플러그 뽑고 조명 끄기. 대기전력 절약이 탄소를 줄입니다.',
     shortText: '대기전력 줄이기',
     category: 'environment',
     difficulty: 1,
@@ -371,7 +371,7 @@ export const MISSIONS: Mission[] = [
   },
   {
     id: 'env-04',
-    text: '오늘 배달 주문 시 일회용 수저·포크를 받지 않도록 설정해보세요.',
+    text: '배달 주문 시 일회용 수저 거절하기. 클릭 하나가 플라스틱을 줄입니다.',
     shortText: '배달 일회용품 거절하기',
     category: 'environment',
     difficulty: 1,
@@ -379,7 +379,7 @@ export const MISSIONS: Mission[] = [
   },
   {
     id: 'env-05',
-    text: '오늘 근거리 이동 시 자동차 대신 대중교통이나 자전거를 이용해보세요.',
+    text: '근거리 이동 시 대중교통 또는 자전거 이용하기. 탄소가 줄어듭니다.',
     shortText: '근거리 이동 시 친환경 교통 이용하기',
     category: 'environment',
     difficulty: 2,
@@ -387,7 +387,7 @@ export const MISSIONS: Mission[] = [
   },
   {
     id: 'env-06',
-    text: '오늘 주변 쓰레기 하나를 줍고, 올바른 분리수거함에 버려보세요.',
+    text: '주변 쓰레기 하나 줍기. 내가 사는 공간은 내가 만듭니다.',
     shortText: '주변 쓰레기 줍기',
     category: 'environment',
     difficulty: 1,
@@ -395,7 +395,7 @@ export const MISSIONS: Mission[] = [
   },
   {
     id: 'env-07',
-    text: '오늘 식사를 남기지 않도록 적당한 양을 주문하거나 담아보세요.',
+    text: '음식 남기지 않기. 적당한 양을 담는 것이 환경을 위한 첫 걸음입니다.',
     shortText: '음식 남기지 않기',
     category: 'environment',
     difficulty: 2,
@@ -403,7 +403,7 @@ export const MISSIONS: Mission[] = [
   },
   {
     id: 'env-08',
-    text: '오늘 장을 볼 때 장바구니를 사용해서 비닐봉지 사용을 줄여보세요.',
+    text: '장바구니 사용하기. 비닐봉지 하나 줄이는 것도 충분한 실천입니다.',
     shortText: '장바구니 사용하기',
     category: 'environment',
     difficulty: 1,
@@ -411,7 +411,7 @@ export const MISSIONS: Mission[] = [
   },
   {
     id: 'env-09',
-    text: '오늘 인터넷 검색 시 불필요한 탭을 닫고, 디지털 탄소 발자국을 줄여보세요.',
+    text: '불필요한 인터넷 탭 닫기. 디지털 탄소 발자국도 줄일 수 있습니다.',
     shortText: '불필요한 인터넷 탭 닫기',
     category: 'environment',
     difficulty: 1,
@@ -419,7 +419,7 @@ export const MISSIONS: Mission[] = [
   },
   {
     id: 'env-10',
-    text: '오늘 지역 사회를 위한 일 하나를 해보세요. 온라인 서명, 후원, 봉사 등 작은 것도 좋습니다.',
+    text: '지역 사회를 위해 작은 행동 하나 하기. 서명, 후원, 봉사 모두 괜찮습니다.',
     shortText: '지역 사회를 위한 작은 행동 하기',
     category: 'environment',
     difficulty: 3,
@@ -431,7 +431,7 @@ export const MISSIONS: Mission[] = [
   // ──────────────────────────────────────────────────────────
   {
     id: 'grow-01',
-    text: '오늘 모르는 단어 하나를 사전에서 찾아 의미와 사용 예시를 기억해보세요.',
+    text: '모르는 단어 하나 사전에서 찾기. 어휘가 늘면 생각의 폭도 넓어집니다.',
     shortText: '모르는 단어 하나 찾아보기',
     category: 'growth',
     difficulty: 1,
@@ -439,7 +439,7 @@ export const MISSIONS: Mission[] = [
   },
   {
     id: 'grow-02',
-    text: '오늘 10페이지만 책을 읽어보세요. 장르나 종류는 상관없습니다.',
+    text: '책 10페이지 읽기. 장르 상관없이 매일 쌓이면 달라집니다.',
     shortText: '책 10페이지 읽기',
     category: 'growth',
     difficulty: 1,
@@ -447,7 +447,7 @@ export const MISSIONS: Mission[] = [
   },
   {
     id: 'grow-03',
-    text: '오늘 새로운 것을 하나 배워보세요. 유튜브 강의, 팟캐스트, 뉴스 어떤 것도 좋습니다.',
+    text: '새로운 것 하나 배우기. 유튜브, 팟캐스트, 뉴스 모두 배움입니다.',
     shortText: '새로운 것 하나 배우기',
     category: 'growth',
     difficulty: 1,
@@ -455,7 +455,7 @@ export const MISSIONS: Mission[] = [
   },
   {
     id: 'grow-04',
-    text: '오늘 하루를 마치며 오늘 배운 것 또는 잘한 것 하나를 일기에 적어보세요.',
+    text: '오늘 배운 것 또는 잘한 것 하나를 일기에 적기. 기록이 성장을 만듭니다.',
     shortText: '오늘 배운 것 일기에 적기',
     category: 'growth',
     difficulty: 1,
@@ -463,7 +463,7 @@ export const MISSIONS: Mission[] = [
   },
   {
     id: 'grow-05',
-    text: '오늘 평소 듣지 않던 장르의 음악이나 팟캐스트를 들어보세요.',
+    text: '평소 다른 장르의 음악이나 팟캐스트 듣기. 낯선 자극이 시야를 넓힙니다.',
     shortText: '평소와 다른 음악 또는 팟캐스트 듣기',
     category: 'growth',
     difficulty: 1,
@@ -471,7 +471,7 @@ export const MISSIONS: Mission[] = [
   },
   {
     id: 'grow-06',
-    text: '오늘 오래 미루던 일 하나를 딱 15분만 시작해보세요.',
+    text: '미루던 일 15분만 시작하기. 시작이 완성의 절반입니다.',
     shortText: '미루던 일 15분만 시작하기',
     category: 'growth',
     difficulty: 2,
@@ -479,7 +479,7 @@ export const MISSIONS: Mission[] = [
   },
   {
     id: 'grow-07',
-    text: '오늘 나의 단점이나 실수를 하나 인정하고, 다음에 어떻게 개선할지 생각해보세요.',
+    text: '내 실수 하나 인정하고 개선 방법 생각하기. 인정이 성장의 출발입니다.',
     shortText: '내 실수를 인정하고 개선 방법 생각하기',
     category: 'growth',
     difficulty: 3,
@@ -487,7 +487,7 @@ export const MISSIONS: Mission[] = [
   },
   {
     id: 'grow-08',
-    text: '오늘 전문가나 멘토에게 조언이나 피드백을 요청해보세요.',
+    text: '멘토나 전문가에게 피드백 요청하기. 혼자보다 빠르게 성장할 수 있습니다.',
     shortText: '멘토에게 피드백 요청하기',
     category: 'growth',
     difficulty: 2,
@@ -495,7 +495,7 @@ export const MISSIONS: Mission[] = [
   },
   {
     id: 'grow-09',
-    text: '오늘 불편하지만 필요한 대화를 회피하지 말고 용기 있게 시작해보세요.',
+    text: '필요한 불편한 대화 용기 내어 시작하기. 회피는 문제를 키울 뿐입니다.',
     shortText: '필요한 불편한 대화 용기 내어 시작하기',
     category: 'growth',
     difficulty: 3,
@@ -503,7 +503,7 @@ export const MISSIONS: Mission[] = [
   },
   {
     id: 'grow-10',
-    text: '오늘 6개월 후의 내가 되고 싶은 모습을 3가지 적어보세요.',
+    text: '6개월 후 목표 3가지 적기. 글로 쓴 목표는 이루어질 가능성이 높습니다.',
     shortText: '6개월 후 목표 3가지 적기',
     category: 'growth',
     difficulty: 2,

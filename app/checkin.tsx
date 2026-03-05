@@ -66,7 +66,7 @@ export default function CheckinScreen() {
 
       const timer = setTimeout(() => {
         router.back();
-      }, 1200);
+      }, 800);
       return () => clearTimeout(timer);
     }
   }, [isSaved]);
@@ -145,7 +145,7 @@ export default function CheckinScreen() {
       >
         {/* 헤더 */}
         <View style={styles.header}>
-          <Text style={styles.headerTitle}>오늘의 체크인</Text>
+          <Text style={styles.headerTitle}>약속, 어떻게 됐나요?</Text>
           <Pressable
             style={({ pressed }) => [styles.closeBtn, pressed && styles.closeBtnPressed]}
             onPress={handleClose}
@@ -179,7 +179,7 @@ export default function CheckinScreen() {
                 {CATEGORY_LABELS[mission.category]}
               </Text>
             </View>
-            <Text style={styles.missionText}>{mission.text}</Text>
+            <Text style={styles.missionText}>{mission.shortText ?? mission.text}</Text>
           </View>
 
           {/* 상태 선택 섹션 */}

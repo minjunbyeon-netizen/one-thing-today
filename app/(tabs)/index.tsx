@@ -30,6 +30,7 @@ import {
   saveCheckin,
   getStreak,
 } from '@/src/utils/database';
+import { getStreakMessage } from '@/src/utils/streakMessages';
 
 // 오늘 날짜 YYYY-MM-DD
 function getToday(): string {
@@ -199,10 +200,9 @@ export default function HomeScreen() {
         {/* 상단 헤더 */}
         <View style={styles.header}>
           <Text style={styles.dateText}>{formatDateKo(today)}</Text>
-          {/* 스트릭 배지 */}
+          {/* 스트릭 배지 — 텍스트 전용 */}
           {streak > 0 && (
             <View style={styles.streakBadge}>
-              <Feather name="zap" size={12} color={Colors.accent} />
               <Text style={styles.streakBadgeText}>{streak}일 연속</Text>
             </View>
           )}
@@ -238,15 +238,22 @@ export default function HomeScreen() {
             </Text>
           </View>
 
-          {/* 미션 텍스트 */}
+          {/* 미션 메인 텍스트 (shortText 대형) */}
           <Text
             style={[
-              styles.missionText,
+              styles.missionShortText,
               isDone && styles.missionTextDone,
             ]}
           >
-            {mission.text}
+            {mission.shortText ?? mission.text}
           </Text>
+
+          {/* 미션 부연 설명 (text 서브) */}
+          {mission.shortText && (
+            <Text style={styles.missionSubText}>
+              {mission.text}
+            </Text>
+          )}
 
           {/* 난이도 표시 */}
           <View style={styles.difficultyRow}>
@@ -314,13 +321,10 @@ export default function HomeScreen() {
             </>
           ) : isDone ? (
             <>
-              {/* 완료 상태 메시지 */}
+              {/* 완료 상태 — 스트릭 숫자 + 격려문구 */}
               <View style={styles.doneMessage}>
-                <Feather name="check-circle" size={24} color={Colors.success} />
-                <Text style={styles.doneMessageTitle}>잘 하셨어요!</Text>
-                <Text style={styles.doneMessageSub}>
-                  오늘의 약속을 지켰습니다.
-                </Text>
+                <Text style={styles.streakNumber}>{streak}</Text>
+                <Text style={styles.doneMessageTitle}>{getStreakMessage(streak)}</Text>
               </View>
 
               {/* 오늘 기록 보기 버튼 (체크인 모달 — 결과 확인) */}
@@ -376,22 +380,6 @@ export default function HomeScreen() {
           )}
         </View>
 
-        {/* 스트릭 섹션 */}
-        <View style={styles.streakSection}>
-          <View style={styles.streakCard}>
-            <View style={styles.streakLeft}>
-              <Feather name="zap" size={18} color={Colors.accent} />
-              <View style={styles.streakTextGroup}>
-                <Text style={styles.streakLabel}>연속 실천</Text>
-                <Text style={styles.streakCount}>
-                  {streak}
-                  <Text style={styles.streakUnit}> 일</Text>
-                </Text>
-              </View>
-            </View>
-            <Feather name="chevron-right" size={16} color={Colors.textTertiary} />
-          </View>
-        </View>
       </ScrollView>
     </SafeAreaView>
   );
@@ -505,13 +493,22 @@ const styles = StyleSheet.create({
     letterSpacing: 0.2,
   },
 
-  // 미션 텍스트
-  missionText: {
-    fontSize: FontSize.md,
-    fontWeight: '500',
+  // 미션 메인 텍스트 (shortText 대형)
+  missionShortText: {
+    fontSize: 22,
+    fontWeight: '700',
     color: Colors.label,
-    lineHeight: FontSize.md * 1.6,
-    marginBottom: 20,
+    lineHeight: 22 * 1.3,
+    marginBottom: 8,
+    letterSpacing: -0.3,
+  },
+  // 미션 부연 설명 (text 서브)
+  missionSubText: {
+    fontSize: 14,
+    fontWeight: '400',
+    color: Colors.textSecondary,
+    lineHeight: 14 * 1.6,
+    marginBottom: 12,
   },
   missionTextDone: {
     color: Colors.textSecondary,
@@ -569,14 +566,15 @@ const styles = StyleSheet.create({
     paddingVertical: 20,
     gap: 8,
   },
-  doneMessageTitle: {
-    fontSize: FontSize.lg,
+  streakNumber: {
+    fontSize: FontSize['4xl'],
     fontWeight: '700',
     color: Colors.label,
-    marginTop: 4,
+    letterSpacing: -1,
   },
-  doneMessageSub: {
+  doneMessageTitle: {
     fontSize: FontSize.base,
+    fontWeight: '500',
     color: Colors.textSecondary,
   },
 
@@ -654,42 +652,4 @@ const styles = StyleSheet.create({
     color: Colors.textSecondary,
   },
 
-  // 스트릭 섹션
-  streakSection: {
-    marginTop: 0,
-  },
-  streakCard: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    backgroundColor: Colors.white,
-    borderRadius: 14,
-    padding: 20,
-    borderWidth: StyleSheet.hairlineWidth,
-    borderColor: Colors.border,
-  },
-  streakLeft: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 12,
-  },
-  streakTextGroup: {
-    gap: 2,
-  },
-  streakLabel: {
-    fontSize: FontSize.xs,
-    fontWeight: '500',
-    color: Colors.textSecondary,
-  },
-  streakCount: {
-    fontSize: FontSize.xl,
-    fontWeight: '700',
-    color: Colors.label,
-    letterSpacing: -0.5,
-  },
-  streakUnit: {
-    fontSize: FontSize.base,
-    fontWeight: '400',
-    color: Colors.textSecondary,
-  },
 });
