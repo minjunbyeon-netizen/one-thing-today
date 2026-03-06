@@ -243,6 +243,7 @@ export default function SettingsScreen() {
 
         {/* 알림 섹션 */}
         <SectionHeader title="알림" />
+        <Text style={styles.sectionDesc}>아침엔 오늘의 미션을, 저녁엔 체크인 알림을 받아요.</Text>
         <View style={styles.card}>
           <SettingRow
             label="알림 사용"
@@ -348,7 +349,7 @@ export default function SettingsScreen() {
         {/* 앱 정보 섹션 */}
         <SectionHeader title="앱 정보" />
         <View style={styles.card}>
-          <SettingRow label="버전" value="1.0.0" />
+          <SettingRow label="버전" value="1.5.0" />
           <View style={styles.rowDivider} />
           <SettingRow
             label="문의하기"

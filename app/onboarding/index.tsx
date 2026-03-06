@@ -208,16 +208,16 @@ export default function OnboardingScreen() {
 
             <View style={styles.welcomeDesc}>
               <View style={styles.descRow}>
-                <Feather name="check-circle" size={18} color={Colors.accent} />
-                <Text style={styles.descText}>작은 약속 하나가 하루를 바꿔요</Text>
+                <Feather name="sun" size={18} color={Colors.accent} />
+                <Text style={styles.descText}>아침 알림으로 오늘의 미션을 받아요</Text>
               </View>
               <View style={styles.descRow}>
                 <Feather name="repeat" size={18} color={Colors.accent} />
-                <Text style={styles.descText}>부담 없이, 매일 딱 하나</Text>
+                <Text style={styles.descText}>하루 동안 딱 하나만 실천해요</Text>
               </View>
               <View style={styles.descRow}>
-                <Feather name="bell" size={18} color={Colors.accent} />
-                <Text style={styles.descText}>알림이 잊지 않게 도와드려요</Text>
+                <Feather name="moon" size={18} color={Colors.accent} />
+                <Text style={styles.descText}>저녁 알림이 오면 결과를 기록해요</Text>
               </View>
             </View>
 

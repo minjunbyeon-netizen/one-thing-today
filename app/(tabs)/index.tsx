@@ -50,6 +50,11 @@ function formatDateKo(dateStr: string): string {
 
 type CheckinStatus = 'done' | 'undone' | 'skipped' | null;
 
+/** 오후 5시 이후면 저녁(체크인) 모드 */
+function getTimeMode(): 'morning' | 'evening' {
+  return new Date().getHours() >= 17 ? 'evening' : 'morning';
+}
+
 export default function HomeScreen() {
   const today = getToday();
 
@@ -58,13 +63,17 @@ export default function HomeScreen() {
   const [streak, setStreak] = useState(0);
   const [monthDone, setMonthDone] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
+  const [timeMode, setTimeMode] = useState<'morning' | 'evening'>(getTimeMode());
+  const [tipsOpen, setTipsOpen] = useState(false);
 
   // 버튼 애니메이션 (200ms fade/scale)
   const buttonScale = new Animated.Value(1);
 
-  // 화면 포커스될 때마다 데이터 새로고침
+  // 화면 포커스될 때마다 데이터 + 시간대 새로고침
   useFocusEffect(
     useCallback(() => {
+      setTimeMode(getTimeMode());
+      setTipsOpen(false);
       loadData();
     }, [])
   );
@@ -196,6 +205,8 @@ export default function HomeScreen() {
     );
   }
 
+  const isChecked = isDone || isSkipped;
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <ScrollView
@@ -206,7 +217,6 @@ export default function HomeScreen() {
         {/* 상단 헤더 */}
         <View style={styles.header}>
           <Text style={styles.dateText}>{formatDateKo(today)}</Text>
-          {/* 스트릭 배지 — 텍스트 전용 */}
           {streak > 0 && (
             <View style={styles.streakBadge}>
               <Text style={styles.streakBadgeText}>{streak}일 연속</Text>
@@ -214,17 +224,28 @@ export default function HomeScreen() {
           )}
         </View>
 
-        {/* 메인 타이틀 */}
+        {/* 메인 타이틀 — 시간대별 */}
         <View style={styles.titleSection}>
-          <Text style={styles.mainTitle}>오늘의{'\n'}약속</Text>
+          <Text style={styles.mainTitle}>
+            {isChecked
+              ? isDone ? '오늘도\n해냈어요' : '내일\n다시 해봐요'
+              : timeMode === 'morning'
+              ? '오늘의\n약속'
+              : '오늘\n어떠셨나요?'}
+          </Text>
+          {!isChecked && timeMode === 'morning' && (
+            <Text style={styles.modeHint}>하루 동안 실천하고, 저녁에 체크해요</Text>
+          )}
         </View>
 
-        {/* 미션 카드 */}
-        <View
-          style={[
+        {/* 미션 카드 — 탭하면 팁 펼치기 */}
+        <Pressable
+          onPress={() => setTipsOpen(o => !o)}
+          style={({ pressed }) => [
             styles.missionCard,
             isDone && styles.missionCardDone,
             isSkipped && styles.missionCardSkipped,
+            pressed && { opacity: 0.95 },
           ]}
         >
           {/* 카테고리 뱃지 */}
@@ -244,53 +265,56 @@ export default function HomeScreen() {
             </Text>
           </View>
 
-          {/* 미션 메인 텍스트 (shortText 대형) */}
-          <Text
-            style={[
-              styles.missionShortText,
-              isDone && styles.missionTextDone,
-            ]}
-          >
+          {/* 미션 메인 텍스트 */}
+          <Text style={[styles.missionShortText, isDone && styles.missionTextDone]}>
             {mission.shortText ?? mission.text}
           </Text>
 
-          {/* 미션 부연 설명 (text 서브) */}
+          {/* 미션 부연 설명 */}
           {mission.shortText && (
-            <Text style={styles.missionSubText}>
-              {mission.text}
-            </Text>
+            <Text style={styles.missionSubText}>{mission.text}</Text>
           )}
 
-          {/* 난이도 표시 */}
+          {/* 난이도 */}
           <View style={styles.difficultyRow}>
             {[1, 2, 3].map((level) => (
               <View
                 key={level}
                 style={[
                   styles.difficultyDot,
-                  level <= mission.difficulty
-                    ? styles.difficultyDotActive
-                    : styles.difficultyDotInactive,
+                  level <= mission.difficulty ? styles.difficultyDotActive : styles.difficultyDotInactive,
                 ]}
               />
             ))}
             <Text style={styles.difficultyLabel}>
-              {mission.difficulty === 1
-                ? '쉬움'
-                : mission.difficulty === 2
-                ? '보통'
-                : '어려움'}
+              {mission.difficulty === 1 ? '쉬움' : mission.difficulty === 2 ? '보통' : '어려움'}
             </Text>
+            <View style={{ flex: 1 }} />
+            <Feather
+              name={tipsOpen ? 'chevron-up' : 'chevron-down'}
+              size={14}
+              color={Colors.textTertiary}
+            />
           </View>
 
-          {/* 완료 표시 오버레이 */}
+          {/* 실천 팁 (펼쳤을 때) */}
+          {tipsOpen && (
+            <View style={styles.tipsBox}>
+              <Text style={styles.tipsTitle}>실천 팁</Text>
+              <Text style={styles.tipsText}>
+                {mission.tip ?? '오늘 하루 중 딱 한 번만 해보세요. 완벽하지 않아도 괜찮아요.'}
+              </Text>
+            </View>
+          )}
+
+          {/* 완료 표시 */}
           {isDone && (
             <View style={styles.doneOverlay}>
               <Feather name="check" size={20} color={Colors.success} />
               <Text style={styles.doneText}>완료</Text>
             </View>
           )}
-        </View>
+        </Pressable>
 
         {/* 이번 달 진행 현황 */}
         {monthDone > 0 && (
@@ -310,100 +334,76 @@ export default function HomeScreen() {
           </View>
         )}
 
-        {/* 체크인 버튼 영역 */}
+        {/* 액션 영역 */}
         <View style={styles.actionSection}>
-          {!isDone && !isSkipped ? (
+
+          {/* ── 이미 체크인 완료 ── */}
+          {isDone ? (
             <>
-              {/* 체크인 모달 열기 버튼 (Primary) */}
+              <View style={styles.doneMessage}>
+                <Text style={styles.streakNumber}>{streak}</Text>
+                <Text style={styles.doneMessageTitle}>{getStreakMessage(streak)}</Text>
+              </View>
+              <Pressable
+                style={({ pressed }) => [styles.buttonSecondary, pressed && styles.buttonSecondaryPressed]}
+                onPress={handleOpenCheckin}
+              >
+                <Feather name="file-text" size={16} color={Colors.label} />
+                <Text style={styles.buttonSecondaryText}>오늘 기록 보기</Text>
+              </Pressable>
+              <Pressable
+                style={({ pressed }) => [styles.buttonGhost, pressed && styles.buttonGhostPressed]}
+                onPress={handleUndo}
+              >
+                <Text style={styles.buttonGhostText}>취소하기</Text>
+              </Pressable>
+            </>
+
+          ) : isSkipped ? (
+            <>
+              <View style={styles.skippedMessage}>
+                <Text style={styles.skippedMessageTitle}>오늘은 건너뛰었어요</Text>
+                <Text style={styles.skippedMessageSub}>내일 다시 도전해봐요.</Text>
+              </View>
+              <Pressable
+                style={({ pressed }) => [styles.buttonGhost, pressed && styles.buttonGhostPressed]}
+                onPress={handleUndo}
+              >
+                <Text style={styles.buttonGhostText}>다시 도전하기</Text>
+              </Pressable>
+            </>
+
+          ) : timeMode === 'morning' ? (
+            /* ── 아침 모드: 체크인 버튼 없음 ── */
+            <View style={styles.morningHintBox}>
+              <Feather name="sun" size={18} color={Colors.warning} />
+              <Text style={styles.morningHintText}>
+                오늘 하루 실천해보세요.{'\n'}저녁 알림이 오면 결과를 기록해요.
+              </Text>
+            </View>
+
+          ) : (
+            /* ── 저녁 모드: 체크인 버튼 표시 ── */
+            <>
               <Animated.View style={{ transform: [{ scale: buttonScale }] }}>
                 <Pressable
-                  style={({ pressed }) => [
-                    styles.buttonPrimary,
-                    pressed && styles.buttonPressed,
-                  ]}
+                  style={({ pressed }) => [styles.buttonPrimary, pressed && styles.buttonPressed]}
                   onPress={handleOpenCheckin}
-                  accessibilityLabel="오늘 약속 체크하기"
-                  accessibilityRole="button"
                 >
                   <Feather name="check-circle" size={20} color={Colors.white} />
                   <Text style={styles.buttonPrimaryText}>오늘 약속 체크하기</Text>
                 </Pressable>
               </Animated.View>
-
-              {/* 건너뛰기 버튼 (Ghost) — 하루 1회 */}
               <Pressable
-                style={({ pressed }) => [
-                  styles.buttonGhost,
-                  pressed && styles.buttonGhostPressed,
-                ]}
+                style={({ pressed }) => [styles.buttonGhost, pressed && styles.buttonGhostPressed]}
                 onPress={handleSkip}
-                accessibilityLabel="오늘은 건너뛰기"
-                accessibilityRole="button"
               >
                 <Text style={styles.buttonGhostText}>오늘은 건너뛸게요</Text>
               </Pressable>
             </>
-          ) : isDone ? (
-            <>
-              {/* 완료 상태 — 스트릭 숫자 + 격려문구 */}
-              <View style={styles.doneMessage}>
-                <Text style={styles.streakNumber}>{streak}</Text>
-                <Text style={styles.doneMessageTitle}>{getStreakMessage(streak)}</Text>
-              </View>
-
-              {/* 오늘 기록 보기 버튼 (체크인 모달 — 결과 확인) */}
-              <Pressable
-                style={({ pressed }) => [
-                  styles.buttonSecondary,
-                  pressed && styles.buttonSecondaryPressed,
-                ]}
-                onPress={handleOpenCheckin}
-                accessibilityLabel="오늘 기록 보기"
-                accessibilityRole="button"
-              >
-                <Feather name="file-text" size={16} color={Colors.label} />
-                <Text style={styles.buttonSecondaryText}>오늘 기록 보기</Text>
-              </Pressable>
-
-              {/* 취소 버튼 (Ghost) */}
-              <Pressable
-                style={({ pressed }) => [
-                  styles.buttonGhost,
-                  pressed && styles.buttonGhostPressed,
-                ]}
-                onPress={handleUndo}
-                accessibilityLabel="완료 취소하기"
-                accessibilityRole="button"
-              >
-                <Text style={styles.buttonGhostText}>취소하기</Text>
-              </Pressable>
-            </>
-          ) : (
-            <>
-              {/* 건너뛴 상태 메시지 */}
-              <View style={styles.skippedMessage}>
-                <Text style={styles.skippedMessageTitle}>오늘은 건너뛰었어요</Text>
-                <Text style={styles.skippedMessageSub}>
-                  내일 다시 도전해봐요.
-                </Text>
-              </View>
-
-              {/* 취소 버튼 (Ghost) */}
-              <Pressable
-                style={({ pressed }) => [
-                  styles.buttonGhost,
-                  pressed && styles.buttonGhostPressed,
-                ]}
-                onPress={handleUndo}
-                accessibilityLabel="건너뛰기 취소"
-                accessibilityRole="button"
-              >
-                <Text style={styles.buttonGhostText}>다시 도전하기</Text>
-              </Pressable>
-            </>
           )}
-        </View>
 
+        </View>
       </ScrollView>
     </SafeAreaView>
   );
@@ -470,6 +470,7 @@ const styles = StyleSheet.create({
   // 메인 타이틀
   titleSection: {
     marginBottom: 24,
+    gap: 6,
   },
   mainTitle: {
     fontSize: FontSize['3xl'],
@@ -477,6 +478,11 @@ const styles = StyleSheet.create({
     color: Colors.label,
     letterSpacing: -0.5,
     lineHeight: FontSize['3xl'] * 1.2,
+  },
+  modeHint: {
+    fontSize: FontSize.sm,
+    color: Colors.textTertiary,
+    fontWeight: '400',
   },
 
   // 미션 카드
@@ -560,6 +566,45 @@ const styles = StyleSheet.create({
     color: Colors.textSecondary,
     marginLeft: 4,
     fontWeight: '500',
+  },
+
+  // 실천 팁
+  tipsBox: {
+    marginTop: 16,
+    paddingTop: 16,
+    borderTopWidth: StyleSheet.hairlineWidth,
+    borderTopColor: Colors.border,
+    gap: 6,
+  },
+  tipsTitle: {
+    fontSize: FontSize.xs,
+    fontWeight: '600',
+    color: Colors.textSecondary,
+    textTransform: 'uppercase',
+    letterSpacing: 0.5,
+  },
+  tipsText: {
+    fontSize: FontSize.sm,
+    color: Colors.textSecondary,
+    lineHeight: FontSize.sm * 1.6,
+  },
+
+  // 아침 힌트 박스
+  morningHintBox: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    gap: 10,
+    backgroundColor: '#FFF9EE',
+    borderRadius: 12,
+    padding: 16,
+    borderWidth: 1,
+    borderColor: '#FFE8A3',
+  },
+  morningHintText: {
+    flex: 1,
+    fontSize: FontSize.sm,
+    color: Colors.textSecondary,
+    lineHeight: FontSize.sm * 1.6,
   },
 
   // 완료 오버레이

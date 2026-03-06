@@ -19,6 +19,7 @@ export interface Mission {
   category: MissionCategory;
   difficulty: 1 | 2 | 3; // 1: 쉬움, 2: 보통, 3: 어려움
   tags: string[];
+  tip?: string;          // 실천 팁 (선택)
 }
 
 // 체크인 (하루 실천 기록)
