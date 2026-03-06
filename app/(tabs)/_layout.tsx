@@ -5,22 +5,35 @@
 
 import { Tabs } from 'expo-router';
 import { Platform, StyleSheet } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { Colors } from '@/src/constants/colors';
 import { FontSize } from '@/src/constants/typography';
 import TabBarIcon from '@/components/ui/tab-bar-icon';
 
 export default function TabLayout() {
+  const insets = useSafeAreaInsets();
+  // 갤럭시 하단 네비게이션 바 높이만큼 탭바를 늘려서 버튼이 가리지 않도록
+  const tabBarHeight = Platform.select({
+    ios: 88,
+    android: 56 + insets.bottom,
+    default: 68,
+  });
+  const tabBarPaddingBottom = Platform.select({
+    ios: 24,
+    android: insets.bottom + 4,
+    default: 8,
+  });
+
   return (
     <Tabs
       screenOptions={{
         headerShown: false,
-        tabBarStyle: styles.tabBar,
+        tabBarStyle: [styles.tabBar, { height: tabBarHeight, paddingBottom: tabBarPaddingBottom }],
         tabBarActiveTintColor: Colors.accent,
         tabBarInactiveTintColor: Colors.textTertiary,
         tabBarLabelStyle: styles.tabLabel,
         tabBarItemStyle: styles.tabItem,
-        // 햅틱 피드백은 TabBarIcon 내부에서 처리
       }}
     >
       {/* 홈 탭 */}
@@ -72,8 +85,6 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.white,
     borderTopColor: Colors.border,
     borderTopWidth: StyleSheet.hairlineWidth,
-    height: Platform.select({ ios: 88, android: 68, default: 68 }),
-    paddingBottom: Platform.select({ ios: 24, android: 8, default: 8 }),
     paddingTop: 8,
     // 그림자 (iOS)
     shadowColor: Colors.black,
