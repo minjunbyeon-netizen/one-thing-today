@@ -12,22 +12,40 @@ export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
+        tabBarActiveTintColor: '#6C63FF',
+        tabBarInactiveTintColor: Colors[colorScheme ?? 'light'].icon,
         headerShown: false,
         tabBarButton: HapticTab,
+        tabBarStyle: {
+          borderTopWidth: 1,
+          borderTopColor: colorScheme === 'dark' ? '#222' : '#EEEEEE',
+        },
       }}>
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Home',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
+          title: '오늘',
+          tabBarIcon: ({ color }) => (
+            <IconSymbol size={26} name="sun.max.fill" color={color} />
+          ),
         }}
       />
       <Tabs.Screen
-        name="explore"
+        name="history"
         options={{
-          title: 'Explore',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
+          title: '기록',
+          tabBarIcon: ({ color }) => (
+            <IconSymbol size={26} name="calendar" color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="settings"
+        options={{
+          title: '설정',
+          tabBarIcon: ({ color }) => (
+            <IconSymbol size={26} name="gearshape.fill" color={color} />
+          ),
         }}
       />
     </Tabs>

@@ -1,0 +1,5 @@
+[15:43:16] START: 남은 작업 정리 - modal 보일러플레이트 제거, theme 색상 정리
+[15:45:14] STEP: app/modal.tsx 보일러플레이트 제거, _layout.tsx 미사용 Stack.Screen 제거
+[15:45:14] DONE: theme.ts tint 색상 및 ThemedText link 색상 #6C63FF 통일 완료
+[21:54:37] START: 에뮬레이터 실행
+[22:02:40] START: README.md 작성 및 이사 준비
