@@ -18,9 +18,12 @@ const MAPPING = {
   'paperplane.fill': 'send',
   'chevron.left.forwardslash.chevron.right': 'code',
   'chevron.right': 'chevron-right',
+<<<<<<< HEAD
   'sun.max.fill': 'wb-sunny',
   'calendar': 'calendar-today',
   'gearshape.fill': 'settings',
+=======
+>>>>>>> 81e4fa17891f5698fdcc40dace9599ffcd69b235
 } as IconMapping;
 
 /**
